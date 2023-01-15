@@ -1,5 +1,6 @@
 package com.apps.ws.ui.controller;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -9,21 +10,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.apps.ws.ui.model.response.UserRest;
+
 @RestController
 @RequestMapping("users")
 public class UserController {
 
     @GetMapping()
     public String getUsers(
-        @RequestParam(value="page", defaultValue = "1") int page,
-        @RequestParam(value="limit", defaultValue = "50") int limit
-    ) {
-        return "get user was called with params: " + page + " and " + limit ;
+            @RequestParam(value = "page", defaultValue = "1") int page,
+            @RequestParam(value = "limit", defaultValue = "50") int limit) {
+        return "get user was called with params: " + page + " and " + limit;
     }
 
-    @GetMapping(path="/{userId}")
-    public String getUser(@PathVariable String userId) {
-        return "get user was called with user ID = " + userId;
+    @GetMapping(path = "/{userId}", produces = { MediaType.APPLICATION_XML_VALUE, MediaType.APPLICATION_JSON_VALUE })
+    public UserRest getUser(@PathVariable String userId) {
+        UserRest returnValue = new UserRest();
+        returnValue.setEmail("test@test.com");
+        returnValue.setFirstName("First");
+        returnValue.setLastName("Last");
+        return returnValue;
     }
 
     @PostMapping
